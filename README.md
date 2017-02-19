@@ -25,3 +25,9 @@ docker pull mysql:latest
 ```
 docker run --name mysqld -e MYSQL_DATABASE=sample_db -e MYSQL_USER=test_user -e MYSQL_PASSWORD=test_user -e MYSQL_ROOT_PASSWORD=verysecret -d mysql
 ```
+
+* リンクコンテナからマスターコンテナに接続します。
+```
+docker run --link  mysqld:mysql -it --rm mysql bash
+```
+※linkは、dockerのversion1.9以降では推奨されない可能性が高い。今後はネットワーキングによる設定が主流になる見込み。
