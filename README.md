@@ -21,7 +21,7 @@ or
 docker pull mysql:latest
 ```
 
-* 実行
+* 起動時にCREATE DATABASEする。
 ```
 docker run --name mysqld -e MYSQL_DATABASE=sample_db -e MYSQL_UESR=test_user -e MYSQL_PASSWORD=test_user -e MYSQL_ROOT_PASSWORD=verysecret -d mysql
 ```
