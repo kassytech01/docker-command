@@ -50,6 +50,7 @@ docker run -d -p 13306:3306 --name mysqld -e MYSQL_DATABASE=sample_db -e MYSQL_U
 docker exec -it mysqld /bin/bash
 ```
 
+※下記は、必要な場合に実施。
 * リンクコンテナからマスターコンテナに接続
 ```
 docker run --link  mysqld:mysql -it --rm mysql bash
@@ -58,5 +59,5 @@ docker run --link  mysqld:mysql -it --rm mysql bash
 
 * mysqlに接続します。
 ```
-mysql -u test_user -ptest_user -h $MYSQL_PORT_3306_TCP_ADDR sample_db
+mysql -u test_user -ptest_user -h127.0.0.1 sample_db
 ```
