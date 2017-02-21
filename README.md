@@ -12,21 +12,45 @@ sudo service docker restart
 ```
 
 ## MySQLコンテナ
-* 最新安定版のイメージを取得
+MySQLの公式イメージのBashは日本語に対応していないので、日本語を入力したりペーストすると入力文字が消えてしまいます。  
+そこで、localesパッケージを導入して、環境変数の設定お行い、さらにテキストエディターを導入するのであれば、$TERM も合わせて設定しておきます。
+
+* Dockerfile作成
 ```
-docker pull mysql
-```
-or
-```
-docker pull mysql:latest
+FROM mysql:latest
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && apt-get install -y locales --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+RUN dpkg-reconfigure locales && locale-gen C.UTF-8 && /usr/sbin/update-locale LANG=C.UTF-8
+
+ENV LC_ALL C.UTF-8
+ENV TERM xterm
+
+RUN { \
+  echo '[mysqld]'; \
+  echo 'character-set-server = utf8mb4'; \
+  echo '[client]'; \
+  echo 'default-character-set = utf8mb4'; \
+} > /etc/mysql/conf.d/charset.cnf
 ```
 
-* 起動時にCREATE DATABASEする。
+* イメージを再構築
 ```
-docker run --name mysqld -e MYSQL_DATABASE=sample_db -e MYSQL_USER=test_user -e MYSQL_PASSWORD=test_user -e MYSQL_ROOT_PASSWORD=verysecret -d mysql
+docker build -t [repogitory/]mysqld-img .
 ```
 
-* リンクコンテナからマスターコンテナに接続します。
+* 起動時にCREATE DATABASE
+```
+docker run -d -p 13306:3306 --name mysqld -e MYSQL_DATABASE=sample_db -e MYSQL_USER=test_user -e MYSQL_PASSWORD=test_user -e MYSQL_CHARSET=utf8 -e MYSQL_ROOT_PASSWORD=verysecret [repogitory/]mysqld-img
+```
+
+* コンテナ内に入る
+```
+docker exec -it mysqld /bin/bash
+```
+
+* リンクコンテナからマスターコンテナに接続
 ```
 docker run --link  mysqld:mysql -it --rm mysql bash
 ```
