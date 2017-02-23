@@ -59,5 +59,5 @@ docker run --link  mysqld:mysql -it --rm mysql bash
 
 * mysqlに接続します。
 ```
-mysql -u test_user -ptest_user -h127.0.0.1 -P13306 sample_db
+mysql -u test_user -ptest_user -h127.0.0.1 sample_db
 ```
