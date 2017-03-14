@@ -26,6 +26,55 @@ $ sudo service docker restart
 $ mkdir ~/docker
 ```
 
+## Postgresqlコンテナ
+[参考]http://qiita.com/hirosemi/items/199a3c753130c12d52f1
+
+* Dockerfile作成
+docker用ディレクトリ`~/docker/postgres`を作成し、直下に以下を配置する。
+```
+FROM postgres:9.6
+RUN localedef -i ja_JP -c -f UTF-8 -A /usr/share/locale/locale.alias ja_JP.UTF-8
+ENV LANG ja_JP.UTF-8
+COPY *.sql /docker-entrypoint-initdb.d/
+```
+
+* 初期化用sqlを配置
+`~/docker/postgres`に下記SQLを配置する。
+
+＜postgresユーザ以外の場合＞
+```sql
+create role user1 login password 'password';
+create database user1db;
+grant all privileges on database user1db to user1;
+```
+
+＜postgresユーザの場合＞
+```sql
+alter user postgres with unencrypted password 'password';
+create database user1db;
+grant all privileges on database user1db to postgres;
+```
+
+* イメージを再構築
+`~/docker/postgres`でビルドを実行する。
+```
+$ docker build -t [repogitory/]postgres-img .
+```
+
+* コンテナ作成
+```
+$ docker run -d --name postgres [repogitory/]postgres-img
+# コンテナ作成のログ
+$ docker logs -f postgres
+```
+
+* 接続確認
+```
+$ docker run -it --rm --link postgres:postgresd [repogitory/]postgres-img psql -h postgresd -U user1 -n user1db
+```
+※psqlで日本語入らない場合は、-nオプションを付けて実行するとできるらしい。ただしreadline(入力履歴？)が効かなくなるらしい。
+
+
 ## MySQLコンテナ
 MySQLの公式イメージのBashは日本語に対応していないので、日本語を入力したりペーストすると入力文字が消えてしまいます。  
 そこで、localesパッケージを導入して、環境変数の設定お行い、さらにテキストエディターを導入するのであれば、$TERM も合わせて設定しておきます。
