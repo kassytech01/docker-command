@@ -1,7 +1,9 @@
 # docker-command
 ## Ubuntu Settings
 ### apt-get install
-※2017.03.14時点の最新版1.12.6がインストールされる。
+dockerをvim のシンタックスと一緒にインストールする。  
+※2017.03.14時点の最新版1.12.6がインストールされる。  
+※`docker`ではなく`docker.io`。`docker`は全然別のパッケージ。
 ```
 $ sudo apt-get install docker.io vim-syntax-docker
 $ docker --version
