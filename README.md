@@ -63,7 +63,7 @@ $ docker build -t [repogitory/]postgres-img .
 
 * コンテナ作成
 ```
-$ docker run -d --name postgres [repogitory/]postgres-img
+$ docker run -d -p 5432:5432 --name postgres [repogitory/]postgres-img
 # コンテナ作成のログ
 $ docker logs -f postgres
 ```
