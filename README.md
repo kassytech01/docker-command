@@ -71,6 +71,14 @@ $ docker logs -f postgres
 * 接続確認
 ```
 $ docker run -it --rm --link postgres:postgresd [repogitory/]postgres-img psql -h postgresd -U user1 -n user1db
+
+> docker run -it --rm --link [linkToContainer]:[alias] [imageName] psql -h [alias] -U user1 user1db
+> -it:対話
+> --rm:ターミナル終了後にコンテナ削除
+> [linkToContainer]:接続先コンテナ名
+> [alias]:接続先コンテナへのエイリアス名
+> [imageName]:コンテナ作成元のイメージ名
+
 ```
 ※psqlで日本語入らない場合は、-nオプションを付けて実行するとできるらしい。ただしreadline(入力履歴？)が効かなくなるらしい。
 
