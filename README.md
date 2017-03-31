@@ -68,6 +68,11 @@ $ docker run -d -p 5432:5432 --name postgres [repogitory/]postgres-img
 $ docker logs -f postgres
 ```
 
+* ログイン確認
+```
+$ docker exec -it postgres psql -h postgresd -U user1 -n user1db
+```
+
 * 接続確認
 ```
 $ docker run -it --rm --link postgres:postgresd [repogitory/]postgres-img psql -h postgresd -U user1 -n user1db
