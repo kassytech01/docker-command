@@ -70,7 +70,7 @@ $ docker logs -f postgres
 
 * ログイン確認
 ```
-$ docker exec -it postgres psql -h postgresd -U user1 -n user1db
+$ docker exec -it postgres psql -h localhost -U user1 -n user1db
 ```
 
 * 接続確認
